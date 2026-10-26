@@ -1,6 +1,6 @@
 # Architecture
 
-This file is a summary of the tings I learned and the decisions I took whilst building this project. I made it to be able to come back and remember the methods, libraries and strategies I used for this project, so it's not required for you read it.
+This file is a summary of the things I learned and the decisions I took whilst building this project. I made it to be able to come back and remember the methods, libraries and strategies I used for this project, so it's not required for you to read it.
 
 To understand what this code does, I've decided to divide it the following sections:
 
@@ -13,7 +13,7 @@ To keep everything in a single script, the $180 \times 360$ world map is compres
 3. **NumPy Bit Unpacking (`np.frombuffer` & `np.unpackbits`)**: Reads the bytes as 8-bit unsigned integers and unpacks each byte into 8 individual bits.
 4. **Reshaping (`.reshape`)**: Reshapes the array of bits into a 2D boolean grid ($180 \times 360$).
 
-Never used base64 or zlib, so it was good lo learn a new way to store data into code.
+Never used base64 or zlib, so it was good to learn a new way to store data into code.
 
 ## 2. 3D Geometry and Reverse ray-tracing
 
