@@ -15,6 +15,17 @@ An ASCII-rendered 3D rotating globe built in Python using Pygame and NumPy. It f
 
 ---
 
+## Customization Parameters (CLI)
+
+You can customize the globe directly from your terminal using command-line arguments:
+
+| Parameter | Description | Default | Example |
+| :--- | :--- | :--- | :--- |
+| `--speed` | Controls the rotation speed of the globe. | `0.025` | `python ascii_earth.py --speed 0.08` |
+| `--no-map` | Starts without land/ocean textures (lighting only). | `False` | `python ascii_earth.py --no-map` |
+| `--land-color` | Custom land color in RGB format (`R,G,B`). | `70,220,100` | `python ascii_earth.py --land-color "220,80,50"` |
+| `--water-color` | Custom ocean color in RGB format (`R,G,B`). | `50,110,255` | `python ascii_earth.py --water-color "0,20,80"` |
+
 ## How it works
  
 Every frame a ray is cast from a virtual camera through every character cell and tested against a sphere. Where it hits, the surface normal is rotated by the Earth's tilt and spin, compared against the sun vector to get a brightness value, and converted back to latitude and longitude to look up whether that point is land or water. Brightness is then mapped to an ASCII character.
