@@ -6,6 +6,7 @@ import zlib
 import numpy as np
 import pygame
 import math
+import argparse
 
 # ---------------------------------------------------------------------------
 # World matrix: 180 rows (lat 89.5° --> -89.5°) x 360 columns (lon -179.5° --> 179.5°)
@@ -279,6 +280,12 @@ def draw_frame(surface, font, ui_font, spin, tilt, show_map):
 
 
 def main():
+    
+    parser = argparse.ArgumentParser(description="Mapa 3D ASCII con iluminación solar en tiempo real.")
+    parser.add_argument("--speed", type=float, default=0.025, help="Velocidad de rotación del globo (por defecto: 0.025)")
+    parser.add_argument("--no-map", action="store_true", help="Arrancar sin la textura de colores del mapa")
+    args = parser.parse_args()
+    
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("ASCII 3D WORLD MAP")
@@ -292,7 +299,8 @@ def main():
     clock = pygame.time.Clock()
 
     spin, tilt = 0.0, 0.35
-    show_map, paused, run = True, False, True
+    show_map = not args.no_map
+    paused, run = False, True
 
     while run:
         for e in pygame.event.get():
@@ -315,7 +323,7 @@ def main():
         pygame.display.flip()
 
         if not paused:
-            spin += 0.025
+            spin += args.speed
         clock.tick(30)
 
     pygame.quit()
