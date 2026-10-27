@@ -206,7 +206,7 @@ def glyph(font, ch, rgb):
     return s
 
 
-def draw_frame(surface, font, ui_font, spin, tilt, show_map):
+def draw_frame(surface, font, ui_font, spin, tilt, show_map, land_rgb, water_rgb):
     surface.fill((0, 0, 0))
     nchar = len(CHARS)
 
@@ -215,7 +215,7 @@ def draw_frame(surface, font, ui_font, spin, tilt, show_map):
     idx = (lum * (nchar - 0.01)).astype(int)
 
     if show_map:
-        base = np.where(land[:, None], LAND_RGB, OCEAN_RGB)
+        base = np.where(land[:, None], land_rgb, water_rgb)
     else:
         base = np.full((len(lum), 3), 255)
 
@@ -281,9 +281,11 @@ def draw_frame(surface, font, ui_font, spin, tilt, show_map):
 
 def main():
     
-    parser = argparse.ArgumentParser(description="Mapa 3D ASCII con iluminación solar en tiempo real.")
-    parser.add_argument("--speed", type=float, default=0.025, help="Velocidad de rotación del globo (por defecto: 0.025)")
-    parser.add_argument("--no-map", action="store_true", help="Arrancar sin la textura de colores del mapa")
+    parser = argparse.ArgumentParser(description="ASCII 3D WORLD MAP (LIVE SOLAR ILLUMINATION.")
+    parser.add_argument("--speed", type=float, default=0.025, help="Globe rotation speed (by default: 0.025)")
+    parser.add_argument("--no-map", action="store_true", help="Start without real earth texture")
+    parser.add_argument("--land-color", type=str, default="70,220,100", help="Land color in R,G,B format (ex: 255,100,0)")
+    parser.add_argument("--water-color", type=str, default="50,110,255", help="Water color in R,G,B format (ex: 0,50,150)")
     args = parser.parse_args()
     
     pygame.init()
@@ -298,6 +300,8 @@ def main():
     )
     clock = pygame.time.Clock()
 
+    land_rgb = np.array([int(x) for x in args.land_color.split(",")])
+    water_rgb = np.array([int(x) for x in args.water_color.split(",")])
     spin, tilt = 0.0, 0.35
     show_map = not args.no_map
     paused, run = False, True
@@ -319,7 +323,7 @@ def main():
         if keys[pygame.K_DOWN]:
             tilt = max(tilt - 0.02, -1.4)
 
-        draw_frame(screen, font, ui_font, spin, tilt, show_map)
+        draw_frame(screen, font, ui_font, spin, tilt, show_map, land_rgb, water_rgb)
         pygame.display.flip()
 
         if not paused:
@@ -330,22 +334,4 @@ def main():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--snapshot":
-        import os
-
-        os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
-        pygame.init()
-        pygame.display.set_mode((WIDTH, HEIGHT))
-        f = pygame.font.SysFont(
-            "couriernew,courier,dejavusansmono,monospace", 12, bold=True
-        )
-        uf = pygame.font.SysFont(
-            "couriernew,courier,dejavusansmono,monospace", 13, bold=True
-        )
-        surf = pygame.Surface((WIDTH, HEIGHT))
-        sp = float(sys.argv[3]) if len(sys.argv) > 3 else 0.0
-        mp = (sys.argv[4] != "0") if len(sys.argv) > 4 else True
-        draw_frame(surf, f, uf, sp, 0.35, mp)
-        pygame.image.save(surf, sys.argv[2])
-    else:
-        main()
+    main()
