@@ -1,12 +1,13 @@
-import base64
 from datetime import datetime, timezone, timedelta
 import sys
 import zlib
+import base64
 
 import numpy as np
 import pygame
 import math
 import argparse
+
 
 # ---------------------------------------------------------------------------
 # World matrix: 180 rows (lat 89.5° --> -89.5°) x 360 columns (lon -179.5° --> 179.5°)
@@ -43,14 +44,12 @@ WORLD_B64 = (
     "+Q8XkoF0"
 )
 
-
 def load_world():
     # Decodes base64, decompresses zlib, and unpacks bits into a boolean grid
     clean_b64 = "".join(WORLD_B64.split())
     raw = zlib.decompress(base64.b64decode(clean_b64))
     bits = np.unpackbits(np.frombuffer(raw, dtype=np.uint8))[: 180 * 360]
     return bits.reshape(180, 360).astype(bool)
-
 
 WORLD = load_world()
 
@@ -78,8 +77,9 @@ LAND_RGB = np.array([70, 220, 100])
 # ---------------------------------------------------------------------------
 
 
-def get_sun_vector():
-    now = datetime.now(timezone.utc)
+def get_sun_vector(now=None):
+    if(now==None):
+        now = datetime.now(timezone.utc)
     utc_hours = now.hour + now.minute / 60.0 + now.second / 3600.0
 
     day_of_year = now.timetuple().tm_yday
@@ -97,8 +97,9 @@ def get_sun_vector():
     return light / np.linalg.norm(light)
 
 
-def get_current_season():
-    now = datetime.now(timezone.utc)
+def get_current_season(now=None):
+    if(now==None):
+        now = datetime.now(timezone.utc)
     doy = now.timetuple().tm_yday
     if 80 <= doy < 172:
         return "SPRING"
@@ -146,7 +147,7 @@ HIT, N_HIT, CELLS = build_static_geometry()
 # ---------------------------------------------------------------------------
 
 
-def get_surface_data(spin, tilt):
+def get_surface_data(spin, tilt, now=None):
     # Rotating surface normals every frame using tilt and spin given
     nx, ny, nz = N_HIT[:, 0], N_HIT[:, 1], N_HIT[:, 2]
 
@@ -160,7 +161,7 @@ def get_surface_data(spin, tilt):
     Y = wy
     Z = wx * sin_s + wz * cos_s
 
-    light = get_sun_vector()
+    light = get_sun_vector(now)
 
     diffuse = np.clip(X * light[0] + Y * light[1] + Z * light[2], 0.0, 1.0)
     lum = AMBIENT + (1 - AMBIENT) * diffuse ** 0.85
