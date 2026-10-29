@@ -2,7 +2,7 @@ from ascii_earth import WORLD
 import numpy as np
 
 def check_world_bin():
-    with open("world.bin", "rb") as f:
+    with open("data/world.bin", "rb") as f:
         raw = f.read()
     
     raw_len = len(raw)
@@ -14,7 +14,7 @@ def check_world_bin():
 def write_world_in_bin():
     bytes_world = WORLD.astype(np.uint8).tobytes()
 
-    with open("world.bin","wb") as f:
+    with open("data/world.bin","wb") as f:
         f.write(bytes_world)
     
     check_world_bin()
