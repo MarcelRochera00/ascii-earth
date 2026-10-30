@@ -1,6 +1,6 @@
 # ASCII Earth: An ASCII 3D World Map with live solar illumination
 
-An ASCII-rendered 3D rotating globe built in Python using Pygame and NumPy. It features real-time solar tracking, seasonal tilt variations, land/ocean shading, and live world clocks.
+An ASCII-rendered 3D rotating globe built in Python using Pygame and NumPy. It features real-time solar tracking, seasonal tilt variations, land/ocean shading, and live world clocks. Make sure to check out the Typescript version in my profile! ([ascii-earth-web](https://github.com/MarcelRochera00/ascii-earth-web))
 
 ![ASCII Globe Demo](globe_rotation.gif)
 
