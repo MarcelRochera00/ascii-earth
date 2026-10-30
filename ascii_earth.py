@@ -135,7 +135,6 @@ def build_static_geometry():
     t = -b - np.sqrt(np.where(hit, disc, 0.0))
     p = o + t[..., None] * d
     n = p / RADIUS
-
     return hit, n[hit], np.argwhere(hit)
 
 

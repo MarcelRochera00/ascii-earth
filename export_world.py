@@ -6,13 +6,14 @@ def check_world_bin():
         raw = f.read()
     
     raw_len = len(raw)
-    loaded = np.frombuffer(raw, dtype=np.uint8).reshape(180, 360).astype(bool)
-    if raw_len != 64800 or not np.array_equal(WORLD, loaded):
+    loaded = np.unpackbits(np.frombuffer(raw, dtype=np.uint8))[: 180 * 360].reshape(180, 360).astype(bool)
+    if raw_len != 8100 or not np.array_equal(WORLD, loaded):
         raise ValueError("world.bin does not match WORLD")
 
 
 def write_world_in_bin():
-    bytes_world = WORLD.astype(np.uint8).tobytes()
+    bytes_world = np.packbits(WORLD.astype(np.uint8)).ravel()
+    
 
     with open("data/world.bin","wb") as f:
         f.write(bytes_world)
