@@ -31,6 +31,9 @@ SHADING_DATA = [
     {"spin": -0.5, "tilt": 1.2, "date": datetime(2026, 1, 1, 1, 30, 0, 0, tzinfo=timezone.utc)},
     {"spin": -1.0, "tilt": 1.4, "date": datetime(2026, 1, 1, 1, 30, 0, 0, tzinfo=timezone.utc)},
     {"spin": -10.0, "tilt": -0.9, "date": datetime(2026, 1, 1, 1, 30, 0, 0, tzinfo=timezone.utc)}, # out of bounds spin
+    {"spin": 4.0, "tilt": 0.3, "date": datetime(2026, 6, 20, 5, 21, 0, 0, tzinfo=timezone.utc)},
+    {"spin": 10.0, "tilt": -0.5, "date": datetime(2026, 9, 21, 9, 0, 0, 0, tzinfo=timezone.utc)},
+    {"spin": -10.0, "tilt": 0.9, "date": datetime(2026, 12, 20, 11, 15, 0, 0, tzinfo=timezone.utc)},
 ]
 
 def sun():
